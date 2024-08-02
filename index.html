@@ -5,13 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hala Tech Lab</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        :root {
+            --primary-color: #4A5899;
+            --secondary-color: #F2B705;
+            --accent-color: #F25C05;
+            --background-color: #F2F2F2;
+        }
+        
         body {
             font-family: 'Roboto', sans-serif;
             line-height: 1.6;
             margin: 0;
-            padding-top: 4rem; /* Adjust based on the header height */
             color: #333;
+            background-color: var(--background-color);
         }
         header { 
             color: #fff;
@@ -20,12 +28,7 @@
             padding: 1rem 5%;
             flex-wrap: wrap;
             margin-bottom: 0; 
-            position: fixed;
-			top: 0;
-			left: 0;
-			right: 0;
-			z-index: 1000; /* Ensure it's on top of other content */
-			background-color: #00254d;
+            background-color: var(--primary-color);
         }
         .logo {
             font-family: Arial, sans-serif;
@@ -34,15 +37,15 @@
             text-transform: uppercase;
             letter-spacing: 1px;
             padding: 10px 20px;
-            border: 1px solid #4a90e2;
+            border: 1px solid var(--secondary-color);
             display: inline-block;
-            background: linear-gradient(45deg, #f06, #9f6);
+            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             border-radius: 50% / 100%;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 10px rgba(74, 144, 226, 0.5);
+            box-shadow: 0 0 10px rgba(242, 183, 5, 0.5);
             margin-right: 1rem;
             order: 1;
         }
@@ -76,7 +79,8 @@
             font-weight: 500;
         }
         nav a:hover {
-            background-color: #00509e;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
         }
         .hero {
             background-image: url('https://www.cognizant.com/content/dam/cognizant_com/core-images/og-home.jpg');
@@ -85,7 +89,6 @@
             color: #fff;
             text-align: center;
             padding: 6rem 1rem;
-            margin-top: 6rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -94,20 +97,35 @@
             height: 80vh;
             overflow: hidden;
         }
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(74, 88, 153, 0.7);
+        }
         .hero .tagline {
             font-size: 1.5rem;
             font-weight: 500;
             margin-bottom: 1.5rem;
             color: #fff;
+            position: relative;
+            z-index: 1;
         }
         .hero img {
             width: 100%;
             height: auto;
             margin-top: 1.5rem;
+            position: relative;
+            z-index: 1;
         }
         .hero h2, .hero p, .cta-button {
             opacity: 1;
             transform: translateY(0);
+            position: relative;
+            z-index: 1;
         }
         .hero h2 {
             font-size: 2.5rem;
@@ -118,7 +136,7 @@
         }
         .cta-button {
             display: inline-block;
-            background-color: #00509e;
+            background-color: var(--accent-color);
             color: #fff;
             text-decoration: none;
             padding: 0.75rem 1.5rem;
@@ -128,7 +146,8 @@
             transition: background-color 0.3s ease;
         }
         .cta-button:hover {
-            background-color: #003366;
+            background-color: var(--secondary-color);
+            color: var(--primary-color);
         }
         main {
             padding: 2rem 5%;
@@ -138,13 +157,14 @@
             margin-top: 2rem;
             padding: 2rem;
             border-radius: 8px;
-            background-color: #eaf1f6;
-            border-left: 5px solid #00509e;
+            background-color: #fff;
+            border-left: 5px solid var(--accent-color);
             color: #333;
         }
         section h2 {
             font-size: 2rem;
-            color: #00509e;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
         }
         section p {
             font-size: 1rem;
@@ -163,17 +183,32 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
+        .service-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
         .service h3 {
             font-size: 1.25rem;
-            color: #00509e;
+            color: var(--primary-color);
+            margin: 0;
+        }
+        .service i {
+            font-size: 1.5rem;
+            color: var(--secondary-color);
         }
         .service p {
             font-size: 1rem;
             line-height: 1.6;
             color: #555;
+            margin-top: 0.5rem;
+        }
+        #about .service, #contact .service {
+            flex: 1 1 100%;
         }
         footer {
-            background-color: #00254d;
+            background-color: var(--primary-color);
             color: #fff;
             padding: 2rem 5%;
             display: flex;
@@ -187,6 +222,7 @@
         footer h4 {
             font-size: 1.25rem;
             margin-bottom: 1rem;
+            color: var(--secondary-color);
         }
         footer p, footer a {
             color: #fff;
@@ -195,6 +231,7 @@
         }
         footer a:hover {
             text-decoration: underline;
+            color: var(--secondary-color);
         }
         @media (max-width: 768px) {
             header {
@@ -260,45 +297,71 @@
     <div class="hero" id="home">
         <div class="tagline">Innovative Solutions for a Connected World</div>
         <img src="https://kvytechnology.com/wp-content/uploads/2024/05/image-2-2.jpg" alt="Hero Image">
-        <h2>Welcome to Hala Tech Lab</h2>
-        <p>Leading IT solutions for the modern world</p>
+        <h2>Welcome to<br>Hala Tech Lab</h2>
+        <p>Leading IT solutions<br>for the modern world</p>
         <a href="#services" class="cta-button">Explore Our Services</a>
     </div>
     
     <main>
         <section id="about">
             <h2>About Us</h2>
-            <p>Hala Tech Lab is committed to delivering cutting-edge technology solutions to help businesses thrive in the digital age.</p>
-            <p>Founded by a team of industry experts, we specialize in creating tailored IT solutions that address your unique challenges and opportunities. Our goal is to empower organizations with innovative technologies that drive growth, enhance efficiency, and ensure security. Whether you need a custom web application, cloud infrastructure, or expert consulting, we are here to provide the expertise and support you need to succeed in today's competitive market.</p>
-            <p>At Hala Tech Lab, we believe in a client-centric approach, where every project starts with understanding your specific needs and goals. Our team works closely with you to design and implement solutions that align with your business objectives. We are passionate about technology and dedicated to continuous learning, ensuring that we stay ahead of industry trends and offer the most advanced solutions available.</p>
-            <p>Our commitment to excellence is reflected in the long-term relationships we build with our clients. We take pride in delivering high-quality results and providing ongoing support to help you navigate the ever-evolving tech landscape. Trust Hala Tech Lab to be your partner in innovation and success, as we work together to achieve your vision and drive your business forward.</p>
+            <div class="services">
+                <div class="service">
+                    <div class="service-header">
+                        <h3>About Us</h3>
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <p>Hala Tech Lab is committed to delivering cutting-edge technology solutions to help businesses thrive in the digital age.</p>
+                    <p>Founded by a team of industry experts, we specialize in creating tailored IT solutions that address your unique challenges and opportunities. Our goal is to empower organizations with innovative technologies that drive growth, enhance efficiency, and ensure security. Whether you need a custom web application, cloud infrastructure, or expert consulting, we are here to provide the expertise and support you need to succeed in today's competitive market.</p>
+                    <p>At Hala Tech Lab, we believe in a client-centric approach, where every project starts with understanding your specific needs and goals. Our team works closely with you to design and implement solutions that align with your business objectives. We are passionate about technology and dedicated to continuous learning, ensuring that we stay ahead of industry trends and offer the most advanced solutions available.</p>
+                    <p>Our commitment to excellence is reflected in the long-term relationships we build with our clients. We take pride in delivering high-quality results and providing ongoing support to help you navigate the ever-evolving tech landscape. Trust Hala Tech Lab to be your partner in innovation and success, as we work together to achieve your vision and drive your business forward.</p>
+                </div>
+            </div>
         </section>
         
         <section id="services">
             <h2>Our Services</h2>
             <div class="services">
                 <div class="service">
-                    <h3>Web Development</h3>
+                    <div class="service-header">
+                        <h3>Web Development</h3>
+                        <i class="fas fa-code"></i>
+                    </div>
                     <p>Custom websites and web applications tailored to your needs.</p>
                 </div>
                 <div class="service">
-                    <h3>Cloud Solutions</h3>
+                    <div class="service-header">
+                        <h3>Cloud Solutions</h3>
+                        <i class="fas fa-cloud"></i>
+                    </div>
                     <p>Scalable and secure cloud infrastructure for your business.</p>
                 </div>
                 <div class="service">
-                    <h3>IT Consulting</h3>
+                    <div class="service-header">
+                        <h3>IT Consulting</h3>
+                        <i class="fas fa-laptop-code"></i>
+                    </div>
                     <p>Expert advice to optimize your IT strategy and operations.</p>
                 </div>
                 <div class="service">
-                    <h3>Cybersecurity</h3>
+                    <div class="service-header">
+                        <h3>Cybersecurity</h3>
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
                     <p>Protect your business with our advanced cybersecurity solutions.</p>
                 </div>
                 <div class="service">
-                    <h3>Data Analytics</h3>
+                    <div class="service-header">
+                        <h3>Data Analytics</h3>
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
                     <p>Unlock insights from your data to drive better decision-making.</p>
                 </div>
                 <div class="service">
-                    <h3>AI and Machine Learning</h3>
+                    <div class="service-header">
+                        <h3>AI and Machine Learning</h3>
+                        <i class="fas fa-robot"></i>
+                    </div>
                     <p>Leverage AI and machine learning to automate and innovate.</p>
                 </div>
             </div>
@@ -306,9 +369,17 @@
         
         <section id="contact">
             <h2>Contact Us</h2>
-            <p>Email: info@halatechlab.com</p>
-            <p>Phone: (123) 456-7890</p>
-            <p>Address: 123 Tech Street, Innovation City, 12345</p>
+            <div class="services">
+                <div class="service">
+                    <div class="service-header">
+                        <h3>Get in Touch</h3>
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <p>Email: info@halatechlab.com</p>
+                    <p>Phone: (123) 456-7890</p>
+                    <p>Address: 123 Tech Street, Innovation City, 12345</p>
+                </div>
+            </div>
         </section>
     </main>
     
