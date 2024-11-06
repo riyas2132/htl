@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hala Tech Lab</title>
+    <title>R-TechLab</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -30,34 +30,9 @@
             background-color: var(--primary-color);
         }
         .logo {
-            font-family: Arial, sans-serif;
-            font-size: 24px;
-            font-weight: bold;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            padding: 10px 20px;
-            border: 1px solid var(--secondary-color);
-            display: inline-block;
-            background: linear-gradient(45deg, var(--secondary-color), var(--accent-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            border-radius: 50% / 100%;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 0 10px rgba(242, 183, 5, 0.5);
+            width: 50px; /* Adjust size as needed */
+            height: auto;
             margin-right: 1rem;
-        }
-        .logo::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            right: -50%;
-            bottom: -50%;
-            background: inherit;
-            border-radius: inherit;
-            transform: rotate(30deg);
-            z-index: -1;
         }
         header h1 {
             margin: 0;
@@ -198,27 +173,6 @@
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        .service-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 0.5rem;
-        }
-        .service h3 {
-            font-size: 1.25rem;
-            color: var(--primary-color);
-            margin: 0;
-        }
-        .service i {
-            font-size: 1.5rem;
-            color: var(--secondary-color);
-        }
-        .service p {
-            font-size: 1rem;
-            line-height: 1.6;
-            color: #555;
-            margin-top: 0.5rem;
-        }
         #about .service, #contact .service {
             flex: 1 1 100%;
         }
@@ -250,16 +204,6 @@
             text-decoration: underline;
             color: var(--secondary-color);
         }
-        footer div:last-child {
-            margin-right: 0;
-        }
-        footer div:last-child a {
-            display: inline-block;
-            margin-right: 1rem;
-        }
-        footer div:last-child i {
-            margin-right: 0.25rem;
-        }
         @media (max-width: 768px) {
             header {
                 flex-wrap: wrap;
@@ -276,18 +220,6 @@
             .nav-container {
                 width: 100%;
                 align-items: center;
-            }
-            nav {
-                margin-bottom: 1rem;
-            }
-            .quick-contact {
-                margin-top: 0.5rem;
-            }
-            .hero h2 {
-                font-size: 2rem;
-            }
-            .hero p {
-                font-size: 1rem;
             }
             .services {
                 flex-direction: column;
@@ -311,27 +243,26 @@
 </head>
 <body>
     <header>
-    <div class="logo">HTL</div>
-    <h1>Hala Tech Lab</h1>
-    <div class="nav-container">
-        <nav>
-            <a href="#home">Home</a>
-            <a href="#about">About</a>
-            <a href="#services">Services</a>
-            <a href="#contact">Contact</a>
-        </nav>
-        <div class="quick-contact">
-            <a href="https://wa.me/1234567890" target="_blank"><i class="fab fa-whatsapp"></i></a>
-            <a href="tel:+1234567890"><i class="fas fa-phone"></i></a>
-            <a href="https://goo.gl/maps/yourLocation" target="_blank"><i class="fas fa-map-marker-alt"></i></a>
+		<h1>R-TechLab</h1>
+        <div class="nav-container">
+            <nav>
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <div class="quick-contact">
+                <a href="https://wa.me/1234567890" target="_blank"><i class="fab fa-whatsapp"></i></a>
+                <a href="tel:+1234567890"><i class="fas fa-phone"></i></a>
+                <a href="https://goo.gl/maps/yourLocation" target="_blank"><i class="fas fa-map-marker-alt"></i></a>
+            </div>
         </div>
-    </div>
-</header>
+    </header>
     
     <div class="hero" id="home">
         <div class="tagline">Innovative Solutions for a Connected World</div>
         <img src="https://kvytechnology.com/wp-content/uploads/2024/05/image-2-2.jpg" alt="Hero Image">
-        <h2>Welcome to<br>Hala Tech Lab</h2>
+        <h2>Welcome to<br>R-TechLab</h2>
         <p>Leading IT solutions<br>for the modern world</p>
         <a href="#services" class="cta-button">Explore Our Services</a>
     </div>
@@ -339,18 +270,7 @@
     <main>
         <section id="about">
             <h2>About Us</h2>
-            <div class="services">
-                <div class="service">
-                    <div class="service-header">
-                        <h3>About Us</h3>
-                        <i class="fas fa-info-circle"></i>
-                    </div>
-                    <p>Hala Tech Lab is committed to delivering cutting-edge technology solutions to help businesses thrive in the digital age.</p>
-                    <p>Founded by a team of industry experts, we specialize in creating tailored IT solutions that address your unique challenges and opportunities. Our goal is to empower organizations with innovative technologies that drive growth, enhance efficiency, and ensure security. Whether you need a custom web application, cloud infrastructure, or expert consulting, we are here to provide the expertise and support you need to succeed in today's competitive market.</p>
-                    <p>At Hala Tech Lab, we believe in a client-centric approach, where every project starts with understanding your specific needs and goals. Our team works closely with you to design and implement solutions that align with your business objectives. We are passionate about technology and dedicated to continuous learning, ensuring that we stay ahead of industry trends and offer the most advanced solutions available.</p>
-                    <p>Our commitment to excellence is reflected in the long-term relationships we build with our clients. We take pride in delivering high-quality results and providing ongoing support to help you navigate the ever-evolving tech landscape. Trust Hala Tech Lab to be your partner in innovation and success, as we work together to achieve your vision and drive your business forward.</p>
-                </div>
-            </div>
+            <p>R-TechLab is committed to delivering cutting-edge technology solutions to help businesses thrive in the digital age...</p>
         </section>
         
         <section id="services">
@@ -361,79 +281,40 @@
                         <h3>Web Development</h3>
                         <i class="fas fa-code"></i>
                     </div>
-                    <p>At HalaTechLab, we specialize in creating custom websites and web applications designed to meet your specific needs. Our team of experienced developers works closely with you to understand your business goals and translate them into powerful, user-friendly digital solutions. Whether you're looking to build a responsive e-commerce site, a dynamic web application, or a sleek corporate website, we use the latest technologies and best practices to ensure your online presence is not only functional but also visually appealing. Trust us to deliver a bespoke web experience that sets you apart in the digital landscape.</p>
+                    <p>We create dynamic and responsive websites...</p>
                 </div>
                 <div class="service">
                     <div class="service-header">
                         <h3>Cloud Solutions</h3>
                         <i class="fas fa-cloud"></i>
                     </div>
-                    <p>At HalaTechLab, we offer scalable and secure cloud solutions tailored to optimize your business operations. Whether you're a startup looking to leverage the flexibility of cloud computing or an established enterprise needing robust infrastructure, our team ensures seamless integration and management of cloud services. From cloud migration strategies to ongoing support and monitoring, we prioritize scalability, security, and cost-efficiency. Partner with us to harness the power of cloud technology and propel your business forward with confidence.</p>
-                </div>
-                <div class="service">
-                    <div class="service-header">
-                        <h3>IT Consulting</h3>
-                        <i class="fas fa-laptop-code"></i>
-                    </div>
-                    <p>At HalaTechLab, our IT consulting services provide expert advice to help you optimize your IT strategy and operations. Our seasoned consultants work closely with your team to understand your unique challenges and goals, offering tailored solutions that drive efficiency and innovation. From infrastructure assessment and strategic planning to implementation and ongoing support, we ensure that your IT investments align with your business objectives. Let us guide you through the complexities of technology to achieve a more agile, productive, and competitive organization.</p>
-                </div>
-                <div class="service">
-                    <div class="service-header">
-                        <h3>Cybersecurity</h3>
-                        <i class="fas fa-shield-alt"></i>
-                    </div>
-                    <p>At HalaTechLab, we prioritize the safety of your business with our advanced cybersecurity solutions. In an era where cyber threats are constantly evolving, our team of experts is dedicated to safeguarding your sensitive data and critical systems. We offer comprehensive services including threat assessment, vulnerability management, intrusion detection, and incident response. By implementing cutting-edge security measures and continuously monitoring your digital environment, we help you stay ahead of potential risks. Trust us to protect your business from cyber attacks, ensuring peace of mind and uninterrupted operations.</p>
-                </div>
-                <div class="service">
-                    <div class="service-header">
-                        <h3>Data Analytics</h3>
-                        <i class="fas fa-chart-bar"></i>
-                    </div>
-                    <p>At HalaTechLab, we empower your business to make informed decisions with our comprehensive data analytics services. By harnessing the power of your data, we uncover valuable insights that drive strategic growth and operational efficiency. Our team of skilled analysts uses advanced techniques and tools to collect, process, and interpret data, transforming it into actionable intelligence. Whether you're looking to understand customer behavior, optimize processes, or predict future trends, we provide the clarity and confidence you need to make data-driven decisions. Unlock the full potential of your data with HalaTechLab and steer your business towards success.</p>
-                </div>
-                <div class="service">
-                    <div class="service-header">
-                        <h3>AI and Machine Learning</h3>
-                        <i class="fas fa-robot"></i>
-                    </div>
-                    <p>At HalaTechLab, we harness the power of AI and machine learning to drive automation and innovation within your business. Our expert team integrates cutting-edge technologies to develop solutions that streamline operations, enhance decision-making, and uncover new opportunities. From predictive analytics and natural language processing to intelligent automation and custom machine learning models, we tailor our approach to meet your specific needs. Embrace the future with AI and machine learning and transform your business processes to achieve greater efficiency and competitive advantage.</p>
+                    <p>Enhance your business capabilities with our cloud services...</p>
                 </div>
             </div>
         </section>
         
         <section id="contact">
             <h2>Contact Us</h2>
-            <div class="services">
-                <div class="service">
-                    <div class="service-header">
-                        <h3>Get in Touch</h3>
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <p>Email: info@halatechlab.com</p>
-                    <p>Phone: (123) 456-7890</p>
-                    <p>Address: 123 Tech Street, Innovation City, 12345</p>
-                </div>
-            </div>
+            <p>Feel free to get in touch for inquiries...</p>
         </section>
     </main>
     
     <footer>
         <div>
-            <h4>Hala Tech Lab</h4>
-            <p>© 2024 Hala Tech Lab. All rights reserved.</p>
+            <h4>Company</h4>
+            <p>R-TechLab - Innovation Hub for IT solutions.</p>
         </div>
         <div>
-            <h4>Contact Information</h4>
-            <p>Email: info@halatechlab.com</p>
-            <p>Phone: (123) 456-7890</p>
+            <h4>Contact</h4>
+            <p>Email: contact@rtechlab.com</p>
+            <p>Phone: +1234567890</p>
         </div>
-		<div>
-			<h4>Follow Us</h4>
-			<a href="#"><i class="fab fa-facebook"></i> Facebook</a>
-			<a href="#"><i class="fab fa-twitter"></i> Twitter</a>
-			<a href="#"><i class="fab fa-instagram"></i> Instagram</a>
-			<a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
-		</div>		
+        <div>
+            <h4>Follow Us</h4>
+            <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
+            <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+        </div>
     </footer>
 </body>
 </html>
+
