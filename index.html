@@ -179,6 +179,24 @@
             }
         }
 
+        .download-contact {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            padding: 12px 24px;
+            background: var(--primary-color);
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            cursor: pointer;
+        }
+
+        .download-contact:hover {
+            background: var(--secondary-color);
+            transform: translateY(-2px);
+        }
     </style>
 </head>
 <body>
@@ -232,6 +250,38 @@
                 </svg>
             </a>
         </div>
+
+        <a href="#" class="download-contact" onclick="downloadContact(event)">Save Contact</a>
     </div>
+
+    <script>
+        function downloadContact(e) {
+            e.preventDefault();
+            
+            const vCard = `BEGIN:VCARD
+VERSION:3.0
+FN:Muhammed Riyas
+N:Riyas;Muhammed;;;
+TITLE:Senior Software Engineer
+EMAIL:riyas2132@gmail.com
+TEL:+971523018868
+ADR:;;Karama;Dubai;;UAE
+URL;type=LinkedIn:https://ae.linkedin.com/in/riyas-nediyodan-90a29116
+URL;type=Instagram:https://www.instagram.com/riyas_nediyodan/
+URL;type=Facebook:https://www.facebook.com/muhammed.riyas.754
+URL;type=WhatsApp:https://wa.me/971523018868
+END:VCARD`;
+
+            const blob = new Blob([vCard], { type: 'text/vcard' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'muhammed_riyas.vcf';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        }
+    </script>
 </body>
 </html>
