@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Details</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f4f6f9;
+        }
+        .order-container {
+            max-width: 800px;
+            margin: 2rem auto;
+            background-color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        .order-header {
+            border-bottom: 2px solid #1976D2;
+            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+        }
+        .order-status {
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .status-pending {
+            color: orange;
+        }
+        .status-completed {
+            color: green;
+        }
+        .status-cancelled {
+            color: red;
+        }
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .spinner-border {
+            width: 3rem;
+            height: 3rem;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading-overlay">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="order-container">
+            <div class="order-header d-flex justify-content-between align-items-center">
+                <h2>Order Details</h2>
+                <div class="order-status" id="orderStatus"></div>
+            </div>
+            
+            <div id="orderDetails">
+                <!-- Order details will be populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://apis.google.com/js/api.js"></script>
+    <script>
+        // Default order number
+        const DEFAULT_ORDER_NUMBER = '';
+
+        // Replace with your Google Sheets API key
+        const XXX = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs';
+        // Replace with your Google Sheet ID
+        const YYY = '1jEm8NKXiqlKDhpzb7RXQElASiLo4AgMF8kFsZkbLcnM';
+        // Sheet name for orders
+        const ZZZ = 'Orders!A:Z';
+
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading-overlay').style.display = 'none';
+        }
+
+        function initClient() {
+            showLoading();
+            gapi.client.init({
+                'apiKey': XXX,
+                'discoveryDocs': ["https://sheets.googleapis.com/$discovery/rest?version=v4"],
+            }).then(function () {
+                // Get order number from URL, use default if not provided
+                const urlParams = new URLSearchParams(window.location.search);
+                const orderNumber = urlParams.get('order') || DEFAULT_ORDER_NUMBER;
+                
+                fetchOrderDetails(orderNumber);
+            }, function (error) {
+                console.error('Error initializing GAPI client:', error);
+                displayError('Failed to initialize Google Sheets API');
+                hideLoading();
+            });
+        }
+
+        function fetchOrderDetails(orderNumber) {
+            gapi.client.sheets.spreadsheets.values.get({
+                spreadsheetId: YYY,
+                range: ZZZ
+            }).then(function (response) {
+                const data = response.result.values;
+                const headers = data[0];
+                const orderDetails = findOrderByNumber(data, orderNumber);
+
+                if (orderDetails) {
+                    renderOrderDetails(headers, orderDetails);
+                } else {
+                    displayError('Order not found');
+                }
+                hideLoading();
+            }, function (response) {
+                console.error('Error: ' + response.result.error.message);
+                displayError('Failed to retrieve order details');
+                hideLoading();
+            });
+        }
+
+        function findOrderByNumber(data, orderNumber) {
+            const orderNumberIndex = data[0].indexOf('OrderNumber');
+            for (let i = 1; i < data.length; i++) {
+                if (data[i] && data[i][orderNumberIndex] === orderNumber) {
+                    return data[i];
+                }
+            }
+            return null;
+        }
+
+        function renderOrderDetails(headers, orderDetails) {
+            const orderDetailsContainer = document.getElementById('orderDetails');
+            const orderStatusElement = document.getElementById('orderStatus');
+
+            // Create an object mapping headers to values for easier access
+            const orderMap = {};
+            headers.forEach((header, index) => {
+                orderMap[header] = orderDetails[index] || 'N/A';
+            });
+
+            // Set order status
+            const statusElement = document.getElementById('orderStatus');
+            const status = orderMap['Status'] || 'Unknown';
+            statusElement.textContent = status;
+            statusElement.classList.add(
+                status.toLowerCase() === 'pending' ? 'status-pending' :
+                status.toLowerCase() === 'completed' ? 'status-completed' :
+                status.toLowerCase() === 'cancelled' ? 'status-cancelled' : ''
+            );
+
+            // Generate HTML for order details
+            orderDetailsContainer.innerHTML = `
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Order Number:</strong> ${orderMap['OrderNumber']}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Name:</strong> ${orderMap['Name']}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Phone:</strong> ${orderMap['Phone']}
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Email:</strong> ${orderMap['Email']}
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Address:</strong> ${orderMap['Address']}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <h4>Order Items</h4>
+                        <pre>${orderMap['Order'] || 'No order details available'}</pre>
+                    </div>
+                </div>
+            `;
+        }
+
+        function displayError(message) {
+            const orderDetailsContainer = document.getElementById('orderDetails');
+            orderDetailsContainer.innerHTML = `
+                <div class="alert alert-danger" role="alert">
+                    ${message}
+                </div>
+            `;
+        }
+
+        // Load the Google Sheets API
+        gapi.load('client', initClient);
+    </script>
+</body>
+</html>
