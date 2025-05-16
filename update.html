@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -129,6 +128,24 @@
             background: #f0fdf4;
         }
 
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .button-group button {
+            flex: 1;
+        }
+
+        .change-password-btn {
+            background: #4b5563;
+        }
+
+        .change-password-btn:hover {
+            background: #6b7280;
+        }
+
         @media (max-width: 480px) {
             body {
                 padding: 10px;
@@ -202,7 +219,10 @@
                 <label for="twitter_url">Twitter URL</label>
                 <input type="url" id="twitter_url" name="twitter_url">
             </div>
-            <button type="submit">Save Changes</button>
+            <div class="button-group">
+                <button type="submit">Save Changes</button>
+                <button type="button" id="changePasswordBtn" class="change-password-btn">Change Password</button>
+            </div>
         </form>
     </div>
 
@@ -218,13 +238,18 @@
         function getIdFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
-            return id || '111'; // Default to 111 if no ID is found
+            return id || '10001'; // Default to 111 if no ID is found
         }
 
         // Load data from Google Sheet
         document.addEventListener('DOMContentLoaded', function() {
             const recordId = getIdFromUrl();
             document.getElementById('recordId').value = recordId;
+            
+            // Set up change password button
+            document.getElementById('changePasswordBtn').addEventListener('click', function() {
+                window.location.href = `change-password.html?id=${recordId}`;
+            });
             
             // Log what record ID we're loading
             console.log('Loading business card with ID:', recordId);
