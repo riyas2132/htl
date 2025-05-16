@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -211,7 +212,7 @@
         const API_KEY = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs';
         const SHEET_NAME = 'BusinessCard';
         // Replace with your Apps Script web app URL
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzAviwQUVRm00-Pp0yQXwNmBmc5DxpmtINomd9j02jyd7Bo3qSo0nYCx-kETwKoM1U/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykPx57Z8Bg6xYW7j5UdtUo8NpDBXt7mXOOcg6YotxhTFMVNyUh0fabTogGm5RHcRU/exec';
 
         // Get ID from URL parameter
         function getIdFromUrl() {
@@ -225,6 +226,9 @@
             const recordId = getIdFromUrl();
             document.getElementById('recordId').value = recordId;
             
+            // Log what record ID we're loading
+            console.log('Loading business card with ID:', recordId);
+            
             fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
                 .then(response => response.json())
                 .then(data => {
@@ -232,25 +236,34 @@
                     if (rows && rows.length > 0) {
                         const headers = rows[0];
                         
-                        // Find the row with the matching ID
+                        // Find the ID column index
                         let idColumnIndex = -1;
                         headers.forEach((header, index) => {
                             if (header.toLowerCase().trim() === 'id') {
                                 idColumnIndex = index;
+                                console.log('Found ID column at index:', idColumnIndex);
                             }
                         });
                         
-                        // Default to first data row if ID column not found
-                        let profileData = rows[1] || [];
+                        let profileData = null;
                         
                         // If ID column found, search for matching row
                         if (idColumnIndex !== -1) {
                             for (let i = 1; i < rows.length; i++) {
                                 if (rows[i][idColumnIndex] === recordId) {
                                     profileData = rows[i];
+                                    console.log('Found matching record at row:', i + 1);
                                     break;
                                 }
                             }
+                        }
+                        
+                        // If no matching row found, show error
+                        if (!profileData) {
+                            document.getElementById('status').className = 'error';
+                            document.getElementById('status').textContent = `Record with ID "${recordId}" not found.`;
+                            console.error('No matching record found for ID:', recordId);
+                            return;
                         }
 
                         // Create a key-value object from headers and data
@@ -310,6 +323,9 @@
                 facebook_url: document.getElementById('facebook_url').value,
                 twitter_url: document.getElementById('twitter_url').value
             };
+
+            // Log the ID we're updating
+            console.log('Updating business card with ID:', formData.recordId);
 
             // Log request details
             console.log('Sending JSON request to:', APPS_SCRIPT_URL);
