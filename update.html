@@ -206,51 +206,97 @@
 
     <script>
         // Google Sheets ID and API key
-        const SHEET_ID = '1IpgOJOIXEOlWaKhPXFAV4kWGJVw8WlfIaJHWicFSK-c';
-        const API_KEY = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs';
-        const SHEET_NAME = 'BusinessCard';
+        const SHEET_ID = '1IpgOJOIXEOlWaKhPXFAV4kWGJVw8WlfIaJHWicFSK-c'; // Replace with your Sheet ID
+        const API_KEY = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs'; // Replace with your API Key (restrict it for read-only if possible)
+        const SHEET_NAME = 'BusinessCard'; // Replace with your sheet name
         // Replace with your Apps Script web app URL
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxNy-ybb9bOtNSvV8YkoluXk9XORHEF1tsRhxfq2ml92QIvFk5rT3E6CNtOBXZoYl8/exec';
 
+        // Function to get URL parameters
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        let currentRecordId = ''; // To store the ID from URL
+
         // Load data from Google Sheet
         document.addEventListener('DOMContentLoaded', function() {
+            const statusDiv = document.getElementById('status');
+            currentRecordId = getUrlParameter('id'); // Get ID from URL, e.g., page.html?id=123
+
+            if (!currentRecordId) {
+                statusDiv.className = 'error';
+                statusDiv.textContent = 'Error: No record ID provided in the URL. Please add "?id=your_record_id" to the URL.';
+                statusDiv.style.display = 'block';
+                document.getElementById('edit-form').style.display = 'none';
+                return;
+            }
+            
+            statusDiv.textContent = `Loading data for ID: ${currentRecordId}...`;
+
             fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
                 .then(response => response.json())
                 .then(data => {
                     const rows = data.values;
                     if (rows && rows.length > 0) {
                         const headers = rows[0];
-                        const profileData = rows[1] || [];
+                        // Assume the first column in your sheet is 'Id'
+                        const idColumnIndex = headers.findIndex(header => header.toLowerCase().trim() === 'id');
 
-                        // Create a key-value object from headers and data
-                        const profile = {};
-                        headers.forEach((header, index) => {
-                            const normalizedHeader = header.toLowerCase().trim();
-                            profile[normalizedHeader] = index < profileData.length ? profileData[index] : '';
-                        });
+                        if (idColumnIndex === -1) {
+                            statusDiv.className = 'error';
+                            statusDiv.textContent = 'Error: "Id" column not found in the Google Sheet headers.';
+                            console.error('Headers found:', headers);
+                            return;
+                        }
 
-                        // Populate form
-                        document.getElementById('fullName').value = profile.fullname || profile.full_name || '';
-                        document.getElementById('profileImage').value = profile.profileimage || profile.profile_image || '';
-                        document.getElementById('jobTitle').value = profile.jobtitle || profile.job_title || '';
-                        document.getElementById('email').value = profile.email || '';
-                        document.getElementById('phone').value = profile.phone || '';
-                        document.getElementById('address').value = profile.address || '';
-                        document.getElementById('linkedin_url').value = profile.linkedin_url || profile.linkedinurl || '';
-                        document.getElementById('whatsapp_url').value = profile.whatsapp_url || profile.whatsappurl || '';
-                        document.getElementById('instagram_url').value = profile.instagram_url || profile.instagramurl || '';
-                        document.getElementById('facebook_url').value = profile.facebook_url || profile.facebookurl || '';
-                        document.getElementById('twitter_url').value = profile.twitter_url || profile.twitterurl || '';
+                        let profileDataRow = null;
+                        // Find the row that matches currentRecordId (skip header row)
+                        for (let i = 1; i < rows.length; i++) {
+                            if (rows[i][idColumnIndex] && rows[i][idColumnIndex].toString() === currentRecordId) {
+                                profileDataRow = rows[i];
+                                break;
+                            }
+                        }
 
-                        // Show form and hide loading
-                        document.getElementById('status').style.display = 'none';
-                        document.getElementById('edit-form').style.display = 'block';
+                        if (profileDataRow) {
+                            const profile = {};
+                            headers.forEach((header, index) => {
+                                const normalizedHeader = header.toLowerCase().trim().replace(/\s+/g, '_'); // Normalize header
+                                profile[normalizedHeader] = index < profileDataRow.length ? profileDataRow[index] : '';
+                            });
+
+                            // Populate form
+                            document.getElementById('fullName').value = profile.fullname || profile.full_name || '';
+                            document.getElementById('profileImage').value = profile.profileimage || profile.profile_image || '';
+                            document.getElementById('jobTitle').value = profile.jobtitle || profile.job_title || '';
+                            document.getElementById('email').value = profile.email || '';
+                            document.getElementById('phone').value = profile.phone || '';
+                            document.getElementById('address').value = profile.address || '';
+                            document.getElementById('linkedin_url').value = profile.linkedin_url || '';
+                            document.getElementById('whatsapp_url').value = profile.whatsapp_url || '';
+                            document.getElementById('instagram_url').value = profile.instagram_url || '';
+                            document.getElementById('facebook_url').value = profile.facebook_url || '';
+                            document.getElementById('twitter_url').value = profile.twitter_url || '';
+
+                            statusDiv.style.display = 'none';
+                            document.getElementById('edit-form').style.display = 'block';
+                        } else {
+                            statusDiv.className = 'error';
+                            statusDiv.textContent = `Error: Record with ID "${currentRecordId}" not found in the sheet.`;
+                        }
+                    } else {
+                         statusDiv.className = 'error';
+                         statusDiv.textContent = 'Error: No data found in the sheet or sheet is empty.';
                     }
                 })
                 .catch(error => {
                     console.error('Error loading data:', error);
-                    document.getElementById('status').className = 'error';
-                    document.getElementById('status').textContent = 'Error loading data: ' + error.message;
+                    statusDiv.className = 'error';
+                    statusDiv.textContent = 'Error loading data: ' + error.message;
                 });
         });
 
@@ -259,13 +305,19 @@
             e.preventDefault();
             const statusDiv = document.getElementById('status');
 
-            // Show loading
+            if (!currentRecordId) {
+                statusDiv.className = 'error';
+                statusDiv.textContent = 'Error: Record ID is missing. Cannot save changes.';
+                statusDiv.style.display = 'block';
+                return;
+            }
+
             statusDiv.className = 'loading';
             statusDiv.textContent = 'Saving changes...';
             statusDiv.style.display = 'block';
 
-            // Get form data
             const formData = {
+                id: currentRecordId, // Include the ID
                 fullName: document.getElementById('fullName').value,
                 profileImage: document.getElementById('profileImage').value,
                 jobTitle: document.getElementById('jobTitle').value,
@@ -279,17 +331,13 @@
                 twitter_url: document.getElementById('twitter_url').value
             };
 
-            // Log request details
             console.log('Sending JSON request to:', APPS_SCRIPT_URL);
             console.log('JSON payload:', JSON.stringify(formData));
 
-            // Try JSON request first
             fetch(APPS_SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify(formData),
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 mode: 'cors'
             })
             .then(response => {
@@ -302,58 +350,58 @@
                     const data = JSON.parse(text);
                     if (data.status === 'success') {
                         statusDiv.className = 'success';
-                        statusDiv.textContent = 'Changes saved successfully!';
-                        setTimeout(() => {
-                            statusDiv.style.display = 'none';
-                        }, 3000);
+                        statusDiv.textContent = data.message || 'Changes saved successfully!';
+                        setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
                     } else {
-                        throw new Error(data.message || 'Failed to save changes');
+                        throw new Error(data.message || 'Failed to save changes via JSON');
                     }
-                } catch (error) {
-                    throw new Error(`Invalid JSON response: ${text}`);
+                } catch (error) { // Catches JSON.parse errors or if data.status is not 'success'
+                    console.error('Error processing JSON response:', error, "Raw text:", text);
+                    statusDiv.textContent = `JSON request error: ${error.message}. Response: ${text.substring(0,100)}. Trying FormData...`;
+                    // Fallback to FormData request
+                    const formDataObj = new FormData();
+                    for (const [key, value] of Object.entries(formData)) {
+                        formDataObj.append(key, value);
+                    }
+
+                    console.log('Sending FormData request to:', APPS_SCRIPT_URL);
+                    fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        body: formDataObj,
+                        mode: 'cors'
+                    })
+                    .then(response => {
+                        console.log('FormData response status:', response.status, response.statusText);
+                        return response.text().then(text => ({ response, text }));
+                    })
+                    .then(({ response: fdResponse, text: fdText }) => {
+                        console.log('Raw response (FormData):', fdText);
+                        try {
+                            const fdData = JSON.parse(fdText);
+                            if (fdData.status === 'success') {
+                                statusDiv.className = 'success';
+                                statusDiv.textContent = fdData.message || 'Changes saved successfully!';
+                                setTimeout(() => { statusDiv.style.display = 'none'; }, 3000);
+                            } else {
+                                throw new Error(fdData.message || 'Failed to save changes via FormData');
+                            }
+                        } catch (fdError) {
+                            console.error('Error processing FormData response:', fdError, "Raw text:", fdText);
+                            statusDiv.className = 'error';
+                            statusDiv.textContent = `FormData request error: ${fdError.message}. Response: ${fdText.substring(0,100)}`;
+                        }
+                    })
+                    .catch(formDataError => {
+                        console.error('FormData request failed:', formDataError);
+                        statusDiv.className = 'error';
+                        statusDiv.textContent = 'Error saving changes (FormData fallback): ' + formDataError.message;
+                    });
                 }
             })
-            .catch(error => {
-                console.error('JSON request failed:', error);
-                statusDiv.textContent = 'JSON request failed, trying FormData...';
-                // Fallback to FormData request
-                const formDataObj = new FormData();
-                for (const [key, value] of Object.entries(formData)) {
-                    formDataObj.append(key, value);
-                }
-
-                console.log('Sending FormData request to:', APPS_SCRIPT_URL);
-                fetch(APPS_SCRIPT_URL, {
-                    method: 'POST',
-                    body: formDataObj,
-                    mode: 'cors'
-                })
-                .then(response => {
-                    console.log('FormData response status:', response.status, response.statusText);
-                    return response.text().then(text => ({ response, text }));
-                })
-                .then(({ response, text }) => {
-                    console.log('Raw response (FormData):', text);
-                    try {
-                        const data = JSON.parse(text);
-                        if (data.status === 'success') {
-                            statusDiv.className = 'success';
-                            statusDiv.textContent = 'Changes saved successfully!';
-                            setTimeout(() => {
-                                statusDiv.style.display = 'none';
-                            }, 3000);
-                        } else {
-                            throw new Error(data.message || 'Failed to save changes');
-                        }
-                    } catch (error) {
-                        throw new Error(`Invalid JSON response: ${text}`);
-                    }
-                })
-                .catch(formDataError => {
-                    console.error('FormData request failed:', formDataError);
-                    statusDiv.className = 'error';
-                    statusDiv.textContent = 'Error saving changes: ' + formDataError.message;
-                });
+            .catch(error => { // Catches initial fetch network errors for JSON request
+                console.error('Initial JSON request failed:', error);
+                statusDiv.className = 'error';
+                statusDiv.textContent = 'Error saving changes: ' + error.message + '. Network issue or CORS. Check console.';
             });
         });
     </script>
