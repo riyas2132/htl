@@ -219,6 +219,11 @@
                 <label for="twitter_url">Twitter URL</label>
                 <input type="url" id="twitter_url" name="twitter_url">
             </div>
+            <div class="form-group">
+                <label for="entered_password">Password</label>
+                <input type="text" id="entered_password" name="entered_password" required>
+            </div>
+			<input type="hidden" id="current_password" name="current_password">
             <div class="button-group">
                 <button type="submit">Save Changes</button>
                 <button type="button" id="changePasswordBtn" class="change-password-btn">Change Password</button>
@@ -232,13 +237,13 @@
         const API_KEY = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs';
         const SHEET_NAME = 'BusinessCard';
         // Replace with your Apps Script web app URL
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwmuialTQNoTUGxuV2hX1v0xFXA3w8CyrizonTf8Jr3VVbbUfQpyV3srgr7cw5skQA/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzIH0_SqOeHy_6DV9eFcs9JQp8j1Ezf0cECBcjsaPWUCpQslEtzteKdV9qvhRH5iok/exec';
 
         // Get ID from URL parameter
         function getIdFromUrl() {
             const urlParams = new URLSearchParams(window.location.search);
             const id = urlParams.get('id');
-            return id || '10001'; // Default to 111 if no ID is found
+            return id || '111'; // Default to 111 if no ID is found
         }
 
         // Load data from Google Sheet
@@ -310,6 +315,7 @@
                         document.getElementById('instagram_url').value = profile.instagram_url || profile.instagramurl || '';
                         document.getElementById('facebook_url').value = profile.facebook_url || profile.facebookurl || '';
                         document.getElementById('twitter_url').value = profile.twitter_url || profile.twitterurl || '';
+						document.getElementById('current_password').value = profile.password || profile.password || '';
 
                         // Show form and hide loading
                         document.getElementById('status').style.display = 'none';
@@ -347,6 +353,8 @@
                 instagram_url: document.getElementById('instagram_url').value,
                 facebook_url: document.getElementById('facebook_url').value,
                 twitter_url: document.getElementById('twitter_url').value,
+				entered_password: document.getElementById('entered_password').value,
+				current_password: document.getElementById('current_password').value,
                 action: 'update'
             };
 
