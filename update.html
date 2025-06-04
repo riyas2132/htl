@@ -5,228 +5,719 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Business Card</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #3b82f6;
-            --gradient-start: #2563eb;
-            --gradient-end: #60a5fa;
+            --primary: #6366f1;
+            --primary-dark: #4f46e5;
+            --secondary: #ec4899;
+            --accent: #06b6d4;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --error: #ef4444;
+            --dark: #0f172a;
+            --gray-50: #f8fafc;
+            --gray-100: #f1f5f9;
+            --gray-200: #e2e8f0;
+            --gray-300: #cbd5e1;
+            --gray-400: #94a3b8;
+            --gray-500: #64748b;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --gray-800: #1e293b;
+            --gray-900: #0f172a;
+            --white: #ffffff;
+            --glass: rgba(255, 255, 255, 0.1);
+            --glass-border: rgba(255, 255, 255, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
+            font-family: 'Inter', sans-serif;
             min-height: 100vh;
-            background: linear-gradient(135deg, #e0f7fa 0%, #f1f8e9 100%);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            overflow-x: hidden;
+            padding: 2rem 1rem;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(120, 219, 255, 0.3) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            border-radius: 50%;
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            opacity: 0.1;
+            animation: float 20s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) { width: 100px; height: 100px; top: 10%; left: 10%; animation-delay: 0s; }
+        .shape:nth-child(2) { width: 60px; height: 60px; top: 20%; right: 20%; animation-delay: 5s; }
+        .shape:nth-child(3) { width: 80px; height: 80px; bottom: 20%; left: 15%; animation-delay: 10s; }
+        .shape:nth-child(4) { width: 120px; height: 120px; bottom: 10%; right: 10%; animation-delay: 15s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-30px) rotate(120deg); }
+            66% { transform: translateY(15px) rotate(240deg); }
         }
 
         .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1);
-            width: 100%;
-            max-width: 500px;
-            padding: 30px;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(37, 99, 235, 0.1);
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            box-shadow: 
+                0 32px 64px rgba(0, 0, 0, 0.1),
+                0 0 0 1px rgba(255, 255, 255, 0.2);
+            padding: 3rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary), var(--accent));
+            border-radius: 24px 24px 0 0;
         }
 
         .container:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 
+                0 40px 80px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 2px;
         }
 
         h1 {
-            font-size: 28px;
-            font-weight: bold;
-            margin: 0 0 20px;
-            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary), var(--secondary), var(--accent));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+        }
+
+        .subtitle {
+            color: var(--gray-600);
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .status-message {
+            padding: 1rem 1.5rem;
+            border-radius: 16px;
+            margin-bottom: 2rem;
+            font-weight: 500;
             text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .loading {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--primary);
+            border-color: rgba(99, 102, 241, 0.2);
+        }
+
+        .error {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--error);
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
+        .success {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success);
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 2rem;
         }
 
         .form-group {
-            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group.half {
+            grid-column: span 1;
+        }
+
+        .two-column {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
         }
 
         label {
             display: block;
-            font-size: 16px;
-            color: #334155;
-            margin-bottom: 8px;
-            font-weight: 500;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--gray-700);
+            margin-bottom: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .input-wrapper {
+            position: relative;
         }
 
         input[type="text"],
         input[type="email"],
         input[type="tel"],
-        input[type="url"] {
+        input[type="url"],
+        input[type="password"] {
             width: 100%;
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            color: #334155;
-            background: #f8fafc;
-            transition: all 0.3s ease;
-            box-sizing: border-box;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--gray-200);
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 400;
+            color: var(--gray-800);
+            background: var(--white);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            outline: none;
         }
 
         input:focus {
-            outline: none;
-            border-color: var(--primary-color);
-            background: #f0f9ff;
-            box-shadow: 0 0 8px rgba(37, 99, 235, 0.2);
-        }
-
-        button {
-            display: block;
-            width: 100%;
-            padding: 12px;
-            background: var(--primary-color);
-            color: white;
-            border: none;
-            border-radius: 12px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        button:hover {
-            background: var(--secondary-color);
+            border-color: var(--primary);
+            box-shadow: 
+                0 0 0 4px rgba(99, 102, 241, 0.1),
+                0 8px 24px rgba(99, 102, 241, 0.15);
             transform: translateY(-2px);
         }
 
-        .loading,
-        .error,
-        .success {
+        input:not(:placeholder-shown) {
+            border-color: var(--success);
+        }
+
+        /* File Upload Styling */
+        .file-upload-section {
+            margin-top: 1rem;
+            padding: 2rem;
+            border: 2px dashed var(--gray-300);
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--gray-50), var(--white));
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .file-upload-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(99, 102, 241, 0.1), transparent);
+            transition: left 0.6s ease;
+        }
+
+        .file-upload-section:hover {
+            border-color: var(--primary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.05), var(--white));
+            transform: translateY(-4px);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.15);
+        }
+
+        .file-upload-section:hover::before {
+            left: 100%;
+        }
+
+        .file-upload-section.dragover {
+            border-color: var(--secondary);
+            background: linear-gradient(135deg, rgba(236, 72, 153, 0.1), var(--white));
+            transform: scale(1.02);
+        }
+
+        .file-upload-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
-            padding: 10px;
-            margin-bottom: 20px;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .file-upload-icon {
+            width: 4rem;
+            height: 4rem;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .file-upload-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .file-upload-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--gray-800);
+        }
+
+        .file-upload-subtitle {
+            font-size: 0.875rem;
+            color: var(--gray-500);
+        }
+
+        .file-input {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .file-upload-button {
+            padding: 0.875rem 2rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            z-index: 3;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        .file-upload-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .file-selected {
+            margin-top: 1.5rem;
+            padding: 1.5rem;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+            border: 2px solid rgba(16, 185, 129, 0.2);
+            border-radius: 16px;
+            display: none;
+            backdrop-filter: blur(10px);
+        }
+
+        .file-selected.show {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .file-icon {
+            width: 3rem;
+            height: 3rem;
+            background: linear-gradient(135deg, var(--success), #059669);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .file-details {
+            flex: 1;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-bottom: 0.25rem;
+        }
+
+        .file-size {
+            font-size: 0.875rem;
+            color: var(--gray-600);
+        }
+
+        .file-remove {
+            background: rgba(239, 68, 68, 0.1);
+            border: none;
+            color: var(--error);
+            cursor: pointer;
+            font-size: 1.5rem;
+            padding: 0.5rem;
             border-radius: 8px;
-            font-weight: 500;
+            transition: all 0.3s ease;
+            width: 2.5rem;
+            height: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .loading {
-            color: var(--primary-color);
-            background: #f0f9ff;
-        }
-
-        .error {
-            color: #dc2626;
-            background: #fef2f2;
-        }
-
-        .success {
-            color: #16a34a;
-            background: #f0fdf4;
+        .file-remove:hover {
+            background: rgba(239, 68, 68, 0.2);
+            transform: scale(1.1);
         }
 
         .button-group {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 1rem;
+            margin-top: 3rem;
         }
 
-        .button-group button {
+        .btn {
             flex: 1;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 16px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
         }
 
-        .change-password-btn {
-            background: #4b5563;
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s ease;
         }
 
-        .change-password-btn:hover {
-            background: #6b7280;
+        .btn:hover::before {
+            left: 100%;
         }
 
-        @media (max-width: 480px) {
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, var(--gray-600), var(--gray-700));
+            color: white;
+            box-shadow: 0 8px 24px rgba(71, 85, 105, 0.3);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 32px rgba(71, 85, 105, 0.4);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
             body {
-                padding: 10px;
+                padding: 1rem;
             }
 
             .container {
-                padding: 20px;
-                border-radius: 15px;
+                padding: 2rem;
+                border-radius: 20px;
             }
 
             h1 {
-                font-size: 24px;
+                font-size: 2rem;
+            }
+
+            .two-column {
+                grid-template-columns: 1fr;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            .file-upload-section {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+                border-radius: 16px;
+            }
+
+            h1 {
+                font-size: 1.75rem;
             }
 
             input[type="text"],
             input[type="email"],
             input[type="tel"],
-            input[type="url"] {
-                font-size: 14px;
+            input[type="url"],
+            input[type="password"] {
+                padding: 0.875rem 1.25rem;
+                font-size: 0.875rem;
             }
+        }
+
+        /* Loading Animation */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 2px solid rgba(99, 102, 241, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--primary);
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 0.5rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Micro-interactions */
+        .form-group {
+            transition: transform 0.2s ease;
+        }
+
+        .form-group:hover {
+            transform: translateX(4px);
+        }
+
+        /* Focus ring improvements */
+        input:focus-visible {
+            outline: 2px solid var(--primary);
+            outline-offset: 2px;
         }
     </style>
 </head>
 <body>
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
     <div class="container">
-        <h1>Edit Business Card</h1>
-        <div id="status" class="loading">Loading data...</div>
+        <div class="header">
+            <h1>Edit Business Card</h1>
+            <p class="subtitle">Update your professional information</p>
+        </div>
+
+        <div id="status" class="status-message loading">
+            <span class="loading-spinner"></span>
+            Loading your information...
+        </div>
+
         <form id="edit-form" style="display: none;">
             <input type="hidden" id="recordId" name="recordId">
-            <div class="form-group">
-                <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" required>
+            <input type="hidden" id="current_password" name="current_password">
+
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="profileImage">Profile Image</label>
+                    <div class="file-upload-section" id="fileUploadSection">
+                        <div class="file-upload-wrapper">
+                            <div class="file-upload-icon">📸</div>
+                            <div class="file-upload-text">
+                                <div class="file-upload-title">Upload Profile Image</div>
+                                <div class="file-upload-subtitle">Drag and drop or click to browse</div>
+                            </div>
+                            <button type="button" class="file-upload-button" onclick="document.getElementById('fileInput').click()">
+                                Choose Image
+                            </button>
+                            <input type="file" id="fileInput" class="file-input" accept="image/*" onchange="LoadFile(event)" />
+                        </div>
+                    </div>
+                    <div class="file-selected" id="fileSelected">
+                        <div class="file-info">
+                            <div class="file-icon" id="fileIcon">📄</div>
+                            <div class="file-details">
+                                <div class="file-name" id="fileName"></div>
+                                <div class="file-size" id="fileSize"></div>
+                            </div>
+                            <button type="button" class="file-remove" onclick="removeFile()" title="Remove file">×</button>
+                        </div>
+                    </div>
+                    <input type="hidden" id="profileImage" name="profileImage" />
+                    <input type="hidden" id="fileData" name="fileData" />
+                    <input type="hidden" id="mimeType" name="mimeType" />
+                    <input type="hidden" id="fileNameHidden" name="fileName" />
+                </div>
+
+                <div class="form-group">
+                    <label for="jobTitle">Job Title</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="jobTitle" name="jobTitle" placeholder="Your professional title">
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-wrapper">
+                            <input type="email" id="email" name="email" placeholder="your@email.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <div class="input-wrapper">
+                            <input type="tel" id="phone" name="phone" placeholder="+1 (123) 456-7890">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="address">Address</label>
+                    <div class="input-wrapper">
+                        <input type="text" id="address" name="address" placeholder="Your business address">
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="linkedin_url">LinkedIn Profile</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="linkedin_url" name="linkedin_url" placeholder="https://linkedin.com/in/yourprofile">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="whatsapp_url">WhatsApp</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="whatsapp_url" name="whatsapp_url" placeholder="https://wa.me/yourNumber">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="two-column">
+                    <div class="form-group">
+                        <label for="instagram_url">Instagram</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="instagram_url" name="instagram_url" placeholder="https://instagram.com/yourhandle">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="facebook_url">Facebook</label>
+                        <div class="input-wrapper">
+                            <input type="url" id="facebook_url" name="facebook_url" placeholder="https://facebook.com/yourprofile">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="twitter_url">Twitter / X</label>
+                    <div class="input-wrapper">
+                        <input type="url" id="twitter_url" name="twitter_url" placeholder="https://twitter.com/yourhandle">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="entered_password">Current Password</label>
+                    <div class="input-wrapper">
+                        <input type="password" id="entered_password" name="entered_password" placeholder="Enter your current password" required>
+                    </div>
+                </div>
             </div>
-            <div class="form-group">
-                <label for="profileImage">Profile Image URL</label>
-                <input type="url" id="profileImage" name="profileImage">
-            </div>
-            <div class="form-group">
-                <label for="jobTitle">Job Title</label>
-                <input type="text" id="jobTitle" name="jobTitle">
-            </div>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email">
-            </div>
-            <div class="form-group">
-                <label for="phone">Phone</label>
-                <input type="tel" id="phone" name="phone">
-            </div>
-            <div class="form-group">
-                <label for="address">Address</label>
-                <input type="text" id="address" name="address">
-            </div>
-            <div class="form-group">
-                <label for="linkedin_url">LinkedIn URL</label>
-                <input type="url" id="linkedin_url" name="linkedin_url">
-            </div>
-            <div class="form-group">
-                <label for="whatsapp_url">WhatsApp URL</label>
-                <input type="url" id="whatsapp_url" name="whatsapp_url">
-            </div>
-            <div class="form-group">
-                <label for="instagram_url">Instagram URL</label>
-                <input type="url" id="instagram_url" name="instagram_url">
-            </div>
-            <div class="form-group">
-                <label for="facebook_url">Facebook URL</label>
-                <input type="url" id="facebook_url" name="facebook_url">
-            </div>
-            <div class="form-group">
-                <label for="twitter_url">Twitter URL</label>
-                <input type="url" id="twitter_url" name="twitter_url">
-            </div>
-            <div class="form-group">
-                <label for="entered_password">Password</label>
-                <input type="text" id="entered_password" name="entered_password" required>
-            </div>
-			<input type="hidden" id="current_password" name="current_password">
+
             <div class="button-group">
-                <button type="submit">Save Changes</button>
-                <button type="button" id="changePasswordBtn" class="change-password-btn">Change Password</button>
+                <button type="submit" class="btn btn-primary">
+                    Save Changes
+                </button>
+                <button type="button" id="changePasswordBtn" class="btn btn-secondary">
+                    Change Password
+                </button>
             </div>
         </form>
     </div>
@@ -237,7 +728,7 @@
         const API_KEY = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs';
         const SHEET_NAME = 'BusinessCard';
         // Replace with your Apps Script web app URL
-        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzIH0_SqOeHy_6DV9eFcs9JQp8j1Ezf0cECBcjsaPWUCpQslEtzteKdV9qvhRH5iok/exec';
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzwn54PAeksOQ4hVj76B2rnY9Lcva8aWs0jKHpUezmVU2e2t19NQ4EZlfGjFgzxtw/exec';
 
         // Get ID from URL parameter
         function getIdFromUrl() {
@@ -290,8 +781,8 @@
                         
                         // If no matching row found, show error
                         if (!profileData) {
-                            document.getElementById('status').className = 'error';
-                            document.getElementById('status').textContent = `Record with ID "${recordId}" not found.`;
+                            document.getElementById('status').className = 'status-message error';
+                            document.getElementById('status').innerHTML = `Record with ID "${recordId}" not found.`;
                             console.error('No matching record found for ID:', recordId);
                             return;
                         }
@@ -315,7 +806,7 @@
                         document.getElementById('instagram_url').value = profile.instagram_url || profile.instagramurl || '';
                         document.getElementById('facebook_url').value = profile.facebook_url || profile.facebookurl || '';
                         document.getElementById('twitter_url').value = profile.twitter_url || profile.twitterurl || '';
-						document.getElementById('current_password').value = profile.password || profile.password || '';
+                        document.getElementById('current_password').value = profile.password || profile.password || '';
 
                         // Show form and hide loading
                         document.getElementById('status').style.display = 'none';
@@ -324,7 +815,7 @@
                 })
                 .catch(error => {
                     console.error('Error loading data:', error);
-                    document.getElementById('status').className = 'error';
+                    document.getElementById('status').className = 'status-message error';
                     document.getElementById('status').textContent = 'Error loading data: ' + error.message;
                 });
         });
@@ -335,8 +826,8 @@
             const statusDiv = document.getElementById('status');
 
             // Show loading
-            statusDiv.className = 'loading';
-            statusDiv.textContent = 'Saving changes...';
+            statusDiv.className = 'status-message loading';
+            statusDiv.innerHTML = '<span class="loading-spinner"></span>Saving your changes...';
             statusDiv.style.display = 'block';
 
             // Get form data
@@ -353,8 +844,13 @@
                 instagram_url: document.getElementById('instagram_url').value,
                 facebook_url: document.getElementById('facebook_url').value,
                 twitter_url: document.getElementById('twitter_url').value,
-				entered_password: document.getElementById('entered_password').value,
-				current_password: document.getElementById('current_password').value,
+                entered_password: document.getElementById('entered_password').value,
+                current_password: document.getElementById('current_password').value,
+				
+				fileData: document.getElementById('fileData').value,
+                mimeType: document.getElementById('mimeType').value,
+                fileName: document.getElementById('fileNameHidden').value, 
+				
                 action: 'update'
             };
 
@@ -383,8 +879,8 @@
                 try {
                     const data = JSON.parse(text);
                     if (data.status === 'success') {
-                        statusDiv.className = 'success';
-                        statusDiv.textContent = 'Changes saved successfully!';
+                        statusDiv.className = 'status-message success';
+                        statusDiv.textContent = '✅ Changes saved successfully!';
                         setTimeout(() => {
                             statusDiv.style.display = 'none';
                         }, 3000);
@@ -397,7 +893,7 @@
             })
             .catch(error => {
                 console.error('JSON request failed:', error);
-                statusDiv.textContent = 'JSON request failed, trying FormData...';
+                statusDiv.innerHTML = '<span class="loading-spinner"></span>Retrying with alternative method...';
                 // Fallback to FormData request
                 const formDataObj = new FormData();
                 for (const [key, value] of Object.entries(formData)) {
@@ -419,8 +915,8 @@
                     try {
                         const data = JSON.parse(text);
                         if (data.status === 'success') {
-                            statusDiv.className = 'success';
-                            statusDiv.textContent = 'Changes saved successfully!';
+                            statusDiv.className = 'status-message success';
+                            statusDiv.textContent = '✅ Changes saved successfully!';
                             setTimeout(() => {
                                 statusDiv.style.display = 'none';
                             }, 3000);
@@ -433,9 +929,147 @@
                 })
                 .catch(formDataError => {
                     console.error('FormData request failed:', formDataError);
-                    statusDiv.className = 'error';
-                    statusDiv.textContent = 'Error saving changes: ' + formDataError.message;
+                    statusDiv.className = 'status-message error';
+                    statusDiv.textContent = '❌ Error saving changes: ' + formDataError.message;
                 });
+            });
+        });
+
+        function LoadFile(event) {
+            var file = event.target.files[0];
+            if (!file) return;
+            
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                console.log(e.target.result);
+                var fileData = e.target.result.substr(e.target.result.indexOf(",")+1);
+                var mimeTypeStart = e.target.result.indexOf("data:") + 5;
+                var mimeTypeEnd = e.target.result.indexOf(";");
+                var mimeType = e.target.result.substr(mimeTypeStart, mimeTypeEnd - mimeTypeStart);
+                var fileName = file.name;
+                
+                document.getElementById("fileData").value = fileData;
+                document.getElementById("mimeType").value = mimeType;
+                document.getElementById("fileNameHidden").value = fileName;
+                
+                // Show file selected UI
+                showFileSelected(fileName, file.size, mimeType);
+            };    
+            reader.readAsDataURL(file);
+        }
+
+        function showFileSelected(fileName, fileSize, mimeType) {
+            const fileSelectedDiv = document.getElementById('fileSelected');
+            const fileNameSpan = document.getElementById('fileName');
+            const fileSizeSpan = document.getElementById('fileSize');
+            const fileIcon = document.getElementById('fileIcon');
+            
+            fileNameSpan.textContent = fileName;
+            fileSizeSpan.textContent = formatFileSize(fileSize);
+            
+            // Set appropriate icon based on file type
+            if (mimeType.startsWith('image/')) {
+                fileIcon.textContent = '🖼️';
+            } else if (mimeType.includes('pdf')) {
+                fileIcon.textContent = '📄';
+            } else if (mimeType.includes('word') || mimeType.includes('document')) {
+                fileIcon.textContent = '📝';
+            } else if (mimeType.includes('excel') || mimeType.includes('spreadsheet')) {
+                fileIcon.textContent = '📊';
+            } else {
+                fileIcon.textContent = '📎';
+            }
+            
+            fileSelectedDiv.classList.add('show');
+            
+            // Hide the upload section
+            document.getElementById('fileUploadSection').style.display = 'none';
+        }
+
+        function removeFile() {
+            // Clear hidden inputs
+            document.getElementById('fileData').value = '';
+            document.getElementById('mimeType').value = '';
+            document.getElementById('fileNameHidden').value = '';
+            
+            // Clear file input
+            document.getElementById('fileInput').value = '';
+            
+            // Hide file selected UI
+            document.getElementById('fileSelected').classList.remove('show');
+            
+            // Show upload section again
+            document.getElementById('fileUploadSection').style.display = 'block';
+        }
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        // Add drag and drop functionality
+        const fileUploadSection = document.getElementById('fileUploadSection');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            fileUploadSection.addEventListener(eventName, preventDefaults, false);
+            document.body.addEventListener(eventName, preventDefaults, false);
+        });
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            fileUploadSection.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            fileUploadSection.addEventListener(eventName, unhighlight, false);
+        });
+
+        fileUploadSection.addEventListener('drop', handleDrop, false);
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        function highlight(e) {
+            fileUploadSection.classList.add('dragover');
+        }
+
+        function unhighlight(e) {
+            fileUploadSection.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0) {
+                const file = files[0];
+                if (file.type.startsWith('image/')) {
+                    document.getElementById('fileInput').files = files;
+                    LoadFile({ target: { files: [file] } });
+                }
+            }
+        }
+
+        // Add smooth form validation feedback
+        const inputs = document.querySelectorAll('input[type="text"], input[type="email"], input[type="tel"], input[type="url"], input[type="password"]');
+        
+        inputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                if (this.value.trim() !== '') {
+                    this.style.borderColor = 'var(--success)';
+                } else if (this.required) {
+                    this.style.borderColor = 'var(--error)';
+                } else {
+                    this.style.borderColor = 'var(--gray-200)';
+                }
+            });
+
+            input.addEventListener('focus', function() {
+                this.style.borderColor = 'var(--primary)';
             });
         });
     </script>
