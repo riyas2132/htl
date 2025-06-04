@@ -4,110 +4,164 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digital Business Card</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
     <style>
         :root {
-            --primary-color: #2563eb;
-            --secondary-color: #3b82f6;
-            --gradient-start: #2563eb;
-            --gradient-end: #60a5fa;
+            --primary-color: #4361ee;
+            --secondary-color: #3a0ca3;
+            --accent-color: #f72585;
+            --text-color: #2b2d42;
+            --light-text: #8d99ae;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+            --gradient-start: #4361ee;
+            --gradient-end: #3a0ca3;
+            --shadow: 0 10px 20px rgba(67, 97, 238, 0.15);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         body {
-            font-family: 'Segoe UI', Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             margin: 0;
             padding: 20px;
             min-height: 100vh;
-            background: linear-gradient(135deg, #e0f7fa 0%, #f1f8e9 100%);
+            background: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
+            color: var(--text-color);
+            background-image: 
+                radial-gradient(at 80% 0%, hsla(189, 100%, 56%, 0.1) 0px, transparent 50%),
+                radial-gradient(at 0% 50%, hsla(355, 100%, 93%, 0.1) 0px, transparent 50%);
         }
 
         .card {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(37, 99, 235, 0.1);
+            background: var(--card-bg);
+            border-radius: 24px;
+            box-shadow: var(--shadow);
             width: 100%;
-            max-width: 380px;
-            padding: 30px;
+            max-width: 420px;
+            padding: 40px;
             box-sizing: border-box;
             transform: translateY(0);
-            transition: all 0.3s ease;
-            border: 1px solid rgba(37, 99, 235, 0.1);
+            transition: var(--transition);
+            border: none;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            z-index: 2;
         }
 
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 40px rgba(37, 99, 235, 0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(67, 97, 238, 0.25);
         }
 
         .profile {
             text-align: center;
             margin-bottom: 30px;
             position: relative;
+            padding-bottom: 20px;
         }
 
         .profile::after {
             content: '';
             position: absolute;
-            bottom: -15px;
+            bottom: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 60%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+            border-radius: 2px;
+        }
+
+        .profile-img-container {
+            position: relative;
+            width: 150px;
+            height: 150px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gradient-start), var(--gradient-end));
+            padding: 4px;
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
+            transition: var(--transition);
         }
 
         .profile-img {
-            width: 140px;
-            height: 140px;
+            width: 100%;
+            height: 100%;
             border-radius: 50%;
-            margin-bottom: 20px;
             object-fit: cover;
-            border: 3px solid var(--primary-color);
-            padding: 3px;
-            background: white;
-            transition: transform 0.3s ease;
+            border: 4px solid white;
+            transition: var(--transition);
+            position: relative;
+            z-index: 1;
         }
 
-        .profile-img:hover {
+        .profile-img-container:hover {
             transform: scale(1.05);
+        }
+
+        .profile-img-container:hover .profile-img {
+            transform: scale(0.95);
         }
 
         .name {
             font-size: 28px;
-            font-weight: bold;
+            font-weight: 700;
             margin: 0;
             background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin-bottom: 5px;
+            letter-spacing: -0.5px;
         }
 
         .title {
-            color: #64748b;
+            color: var(--light-text);
             margin: 5px 0;
             font-size: 18px;
+            font-weight: 500;
+        }
+
+        .company {
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 16px;
+            margin-top: 3px;
         }
 
         .contact-info {
-            padding-top: 20px;
+            padding-top: 10px;
         }
 
         .info-item {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            padding: 12px;
+            margin-bottom: 16px;
+            padding: 14px 16px;
             border-radius: 12px;
-            background: #f8fafc;
-            transition: all 0.3s ease;
-            text-decoration: none; /* For phone link */
+            background: rgba(67, 97, 238, 0.05);
+            transition: var(--transition);
+            text-decoration: none;
+            border: 1px solid rgba(67, 97, 238, 0.1);
         }
 
         .info-item:hover {
-            background: #f0f9ff;
+            background: rgba(67, 97, 238, 0.1);
             transform: translateX(5px);
+            border-color: rgba(67, 97, 238, 0.2);
         }
 
         .info-item svg {
@@ -115,55 +169,125 @@
             height: 24px;
             margin-right: 15px;
             fill: var(--primary-color);
+            flex-shrink: 0;
         }
 
         .info-item span {
-            color: #334155;
-            font-size: 16px;
+            color: var(--text-color);
+            font-size: 15px;
+            font-weight: 500;
         }
 
         .social-links {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 16px;
             margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #e2e8f0;
+            padding-top: 25px;
+            border-top: 1px solid rgba(141, 153, 174, 0.2);
         }
 
         .social-links a {
-            background: #f8fafc;
-            padding: 12px;
-            border-radius: 50%;
+            background: rgba(67, 97, 238, 0.05);
+            padding: 14px;
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.3s ease;
+            transition: var(--transition);
+            border: 1px solid rgba(67, 97, 238, 0.1);
         }
 
         .social-links svg {
-            width: 24px;
-            height: 24px;
+            width: 22px;
+            height: 22px;
             fill: var(--primary-color);
+            transition: var(--transition);
         }
 
         .social-links a:hover {
             background: var(--primary-color);
             transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(67, 97, 238, 0.3);
         }
 
         .social-links a:hover svg {
             fill: white;
         }
 
+        .download-contact {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            padding: 14px 24px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            transition: var(--transition);
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(67, 97, 238, 0.25);
+        }
+
+        .download-contact:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(67, 97, 238, 0.35);
+            background: linear-gradient(to right, var(--gradient-end), var(--gradient-start));
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--primary-color);
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        .loading::after {
+            content: '...';
+            animation: dots 1.5s steps(5, end) infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        /* Floating decorative elements */
+        .decor-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(67, 97, 238, 0.1);
+            z-index: -1;
+        }
+
+        .circle-1 {
+            width: 120px;
+            height: 120px;
+            top: -40px;
+            right: -40px;
+        }
+
+        .circle-2 {
+            width: 80px;
+            height: 80px;
+            bottom: -20px;
+            left: -20px;
+        }
+
+        /* Responsive adjustments */
         @media (max-width: 480px) {
             body {
-                padding: 10px;
+                padding: 15px;
             }
 
             .card {
-                padding: 20px;
-                border-radius: 15px;
+                padding: 30px 25px;
+                border-radius: 20px;
             }
 
             .name {
@@ -174,72 +298,38 @@
                 font-size: 16px;
             }
 
-            .profile-img {
-                width: 120px;
-                height: 120px;
+            .profile-img-container {
+                width: 130px;
+                height: 130px;
             }
         }
 
-        .download-contact {
-            display: block;
-            text-align: center;
-            margin-top: 20px;
-            padding: 12px 24px;
-            background: var(--primary-color);
-            color: white;
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.3s ease;
-            font-weight: 500;
-            cursor: pointer;
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
-        .download-contact:hover {
-            background: var(--secondary-color);
-            transform: translateY(-2px);
-        }
-
-        .loading {
-            text-align: center;
-            padding: 20px;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-
-        /* Debug section */
-        .debug-section {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #f8f9fa;
-            border-radius: 10px;
-            display: none;
-        }
-        
-        .debug-button {
-            background-color: #e2e8f0;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 10px;
-            font-size: 13px;
-            color: #334155;
-            transition: background-color 0.2s ease;
-        }
-        .debug-button:hover {
-            background-color: #d1d5db;
+        #profile {
+            animation: fadeIn 0.6s ease-out forwards;
         }
     </style>
 </head>
 <body>
     <div class="card">
-        <div id="loading" class="loading">Loading contact information...</div>
+        <div class="decor-circle circle-1"></div>
+        <div class="decor-circle circle-2"></div>
+        
+        <div id="loading" class="loading">Loading contact information</div>
         
         <div id="profile" style="display: none;">
             <div class="profile">
-                <img id="profile-image" src="" alt="Profile Image" class="profile-img">
+                <div class="profile-img-container">
+                    <img id="profile-image" src="" alt="Profile Image" class="profile-img">
+                </div>
                 <h1 id="full-name" class="name"></h1>
                 <p id="job-title" class="title"></p>
+                <p id="company" class="company"></p>
             </div>
 
             <div class="contact-info">
@@ -264,89 +354,50 @@
             </div>
 
             <div id="social-links" class="social-links">
-                </div>
-
-            <a href="#" class="download-contact" onclick="downloadContact(event)">Save Contact</a>
-
-            
-            <div class="debug-section" id="debug-section">
-                <h3>Debug Information (All Sheet Data)</h3>
-                <pre id="debug-content"></pre>
-                <button class="debug-button" onclick="toggleDebug()">Close Debug</button>
+                <!-- Social links will be inserted here by JavaScript -->
             </div>
-                
+
+            <button class="download-contact" onclick="downloadContact(event)">Save to Contacts</button>
         </div>
     </div>
 
     <script>
         // Google Sheets ID and API key
-        const SHEET_ID = '1IpgOJOIXEOlWaKhPXFAV4kWGJVw8WlfIaJHWicFSK-c'; // Replace with your Sheet ID
-        const API_KEY = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs';   // Replace with your API Key
-        const SHEET_NAME = 'BusinessCard'; // Name of your sheet tab
+        const SHEET_ID = '1IpgOJOIXEOlWaKhPXFAV4kWGJVw8WlfIaJHWicFSK-c';
+        const API_KEY = 'AIzaSyByyiuwuJBysKl2xtvl6wCw6Gz9shyDzXs';
+        const SHEET_NAME = 'BusinessCard';
 
-        // For debugging
-        let rawSheetData = null;
-        let currentProfileDataForDebug = null; // To store the specific profile being displayed
-
-        function toggleDebug() {
-            const debugSection = document.getElementById('debug-section');
-            const showDebugBtn = document.getElementById('show-debug');
-            
-            if (debugSection.style.display === 'none' || !debugSection.style.display) {
-                debugSection.style.display = 'block';
-                if (showDebugBtn) showDebugBtn.style.display = 'none';
-                
-                // Show the raw sheet data in the debug section
-                if (rawSheetData) {
-                    document.getElementById('debug-content').textContent = 
-                        JSON.stringify(rawSheetData, null, 2);
-                } else {
-                    document.getElementById('debug-content').textContent = "Raw sheet data not loaded yet.";
-                }
-            } else {
-                debugSection.style.display = 'none';
-                if (showDebugBtn) showDebugBtn.style.display = 'block';
-            }
-        }
-        
-        // Load data from Google Sheet
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
-            const contactId = urlParams.get('id');
+            const contactId = urlParams.get('id') || '111';
 
             const loadingElement = document.getElementById('loading');
             const profileElement = document.getElementById('profile');
-            const showDebugButton = document.getElementById('show-debug');
 
             if (!contactId) {
-                loadingElement.textContent = 'Error: No contact ID provided in the URL. Please append ?id=<your_id> to the URL.';
-                if (showDebugButton) showDebugButton.style.display = 'none'; // Hide debug if no ID
+                loadingElement.textContent = 'Error: No contact ID provided. Add ?id=YOUR_ID to the URL.';
                 return;
             }
 
             fetch(`https://sheets.googleapis.com/v4/spreadsheets/${SHEET_ID}/values/${SHEET_NAME}?key=${API_KEY}`)
                 .then(response => {
                     if (!response.ok) {
-                        return response.json().then(err => { throw new Error(`Network response was not ok: ${response.status} ${response.statusText}. Details: ${JSON.stringify(err)}`) });
+                        throw new Error(`Network error: ${response.status}`);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    rawSheetData = data; // Store raw data for debugging
-                    
                     const rows = data.values;
                     if (rows && rows.length > 0) {
                         const headers = rows[0].map(header => header.toLowerCase().trim());
                         const idColumnIndex = headers.indexOf('id');
 
                         if (idColumnIndex === -1) {
-                            loadingElement.textContent = "Error: 'Id' column not found in the Google Sheet. Please ensure a column named 'Id' exists.";
-                            if (showDebugButton) showDebugButton.style.display = 'block'; // Allow showing raw data to debug headers
+                            loadingElement.textContent = "Error: 'Id' column not found in the sheet.";
                             return;
                         }
 
                         let foundProfileData = null;
-                        // Start from 1 to skip header row
                         for (let i = 1; i < rows.length; i++) {
                             const currentRow = rows[i];
                             if (currentRow.length > idColumnIndex && currentRow[idColumnIndex] && currentRow[idColumnIndex].trim().toLowerCase() === contactId.trim().toLowerCase()) {
@@ -358,43 +409,40 @@
                         if (foundProfileData) {
                             loadingElement.style.display = 'none';
                             profileElement.style.display = 'block';
-                            if (showDebugButton) showDebugButton.style.display = 'block';
-
 
                             const profile = {};
                             headers.forEach((header, index) => {
-                                const normalizedHeader = header; // Already normalized: .toLowerCase().trim()
-                                if (index < foundProfileData.length) {
-                                    profile[normalizedHeader] = foundProfileData[index];
-                                } else {
-                                    profile[normalizedHeader] = ''; // Default to empty if no data
-                                }
+                                const normalizedHeader = header;
+                                profile[normalizedHeader] = index < foundProfileData.length ? foundProfileData[index] : '';
                             });
                             
-                            currentProfileDataForDebug = profile; // For potential specific debug
-                            console.log(`Profile data for ID '${contactId}':`, profile);
                             populateCard(profile);
                         } else {
-                            loadingElement.textContent = `Error: Contact with ID '${contactId}' not found in the sheet.`;
-                            if (showDebugButton) showDebugButton.style.display = 'block'; // Allow showing raw data
+                            loadingElement.textContent = `Contact with ID '${contactId}' not found.`;
                         }
                     } else {
-                        loadingElement.textContent = 'No data found in the Google Sheet.';
-                        if (showDebugButton) showDebugButton.style.display = 'block'; // Allow showing raw data
+                        loadingElement.textContent = 'No data found in the sheet.';
                     }
                 })
                 .catch(error => {
-                    console.error('Error loading data:', error);
-                    loadingElement.textContent = 'Error loading contact information: ' + error.message;
-                    if (showDebugButton) showDebugButton.style.display = 'block'; // Allow showing raw data
+                    console.error('Error:', error);
+                    loadingElement.textContent = 'Error loading contact: ' + error.message;
                 });
         });
         
         function populateCard(data) {
-            // Basic info - access data using normalized (lowercase, trimmed) keys
-            document.getElementById('profile-image').src = data.profileimage || data['profile image'] || 'https://via.placeholder.com/140';
+            // Set profile image with fallback
+            const defaultImage = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+            const googleDriveImageBase = 'https://lh3.googleusercontent.com/d/';
+            const imageId = data.image_id;
+            const profileImageUrl = imageId 
+                ? `${googleDriveImageBase}${imageId}=s220?authuser=0`
+                : defaultImage;
+            
+            document.getElementById('profile-image').src = data.profileimage || profileImageUrl || defaultImage;
             document.getElementById('full-name').textContent = data.fullname || data['full name'] || '';
             document.getElementById('job-title').textContent = data.jobtitle || data['job title'] || '';
+            document.getElementById('company').textContent = data.company || '';
             
             // Contact info
             document.getElementById('email').textContent = data.email || '';
@@ -420,7 +468,7 @@
             for (const [platform, variations] of Object.entries(socialPlatformsMap)) {
                 let socialUrl = null;
                 
-                for (const variant of variations) { // variant is already a normalized key
+                for (const variant of variations) {
                     if (data[variant] && String(data[variant]).trim() !== '') {
                         socialUrl = String(data[variant]).trim();
                         break;
@@ -430,20 +478,19 @@
                 if (socialUrl) {
                     socialLinksFound++;
                     if (!socialUrl.startsWith('http://') && !socialUrl.startsWith('https://') && !socialUrl.startsWith('mailto:') && !socialUrl.startsWith('tel:')) {
-                        // For platforms like WhatsApp, the link might be 'wa.me/...' which is fine, or just a username.
-                        // For general web links, prepend https.
-                        if (platform === 'whatsapp' && /^\d+$/.test(socialUrl.replace(/\D/g,''))) { // if it's a phone number for whatsapp
-                             // socialUrl = `https://wa.me/${socialUrl.replace(/\D/g,'')}`; // Standardize WhatsApp link
-                        } else if (platform !== 'whatsapp') { // For other platforms, assume it's a web URL
+                        if (platform === 'whatsapp' && /^\d+$/.test(socialUrl.replace(/\D/g,''))) {
+                            socialUrl = `https://wa.me/${socialUrl.replace(/\D/g,'')}`;
+                        } else {
                             socialUrl = 'https://' + socialUrl;
                         }
                     }
                     
                     const link = document.createElement('a');
                     link.href = socialUrl;
-                    link.target = '_blank'; 
-                    link.rel = 'noopener noreferrer'; 
+                    link.target = '_blank';
+                    link.rel = 'noopener noreferrer';
                     link.title = platform.charAt(0).toUpperCase() + platform.slice(1);
+                    link.setAttribute('aria-label', platform);
                     
                     const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
                     svg.setAttribute('viewBox', '0 0 24 24');
@@ -459,8 +506,8 @@
             
             if (socialLinksFound === 0) {
                 const noSocialMsg = document.createElement('p');
-                noSocialMsg.textContent = 'No social links provided for this contact.';
-                noSocialMsg.style.color = '#64748b';
+                noSocialMsg.textContent = 'No social links provided';
+                noSocialMsg.style.color = 'var(--light-text)';
                 noSocialMsg.style.fontSize = '14px';
                 noSocialMsg.style.textAlign = 'center';
                 noSocialMsg.style.width = '100%';
@@ -477,7 +524,7 @@
                 twitter: 'M22.46 6c-.77.35-1.6.58-2.46.69.88-.53 1.56-1.37 1.88-2.38-.83.5-1.75.85-2.72 1.05C18.37 4.5 17.26 4 16 4c-2.35 0-4.27 1.92-4.27 4.29 0 .34.04.67.11.98C8.28 9.09 5.11 7.38 3 4.79c-.37.63-.58 1.37-.58 2.15 0 1.49.75 2.81 1.91 3.56-.71 0-1.37-.2-1.95-.5v.03c0 2.08 1.48 3.82 3.44 4.21a4.22 4.22 0 0 1-1.93.07 4.28 4.28 0 0 0 4 2.98 8.521 8.521 0 0 1-5.33 1.84c-.34 0-.68-.02-1.02-.06C3.44 20.29 5.7 21 8.12 21 16 21 20.33 14.46 20.33 8.79c0-.19 0-.37-.01-.56.84-.6 1.56-1.36 2.14-2.23z',
                 github: 'M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.167 6.839 9.49.5.09.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z'
             };
-            return icons[platform] || ''; // Default to empty path if icon not found
+            return icons[platform] || '';
         }
         
         function downloadContact(e) {
@@ -488,10 +535,11 @@
             const email = document.getElementById('email').textContent;
             const phone = document.getElementById('phone').textContent;
             const address = document.getElementById('address').textContent;
+            const company = document.getElementById('company').textContent;
             
             const socialLinks = {};
             document.querySelectorAll('#social-links a').forEach(link => {
-                const platform = link.title.toLowerCase(); // e.g. "linkedin"
+                const platform = link.title.toLowerCase();
                 socialLinks[platform] = link.href;
             });
             
@@ -500,19 +548,19 @@ VERSION:3.0
 FN:${fullName}
 N:${fullName.split(' ').reverse().join(';')};;;
 TITLE:${jobTitle}
+ORG:${company}
 EMAIL:${email}
 TEL;TYPE=CELL:${phone}
 ADR;TYPE=WORK:;;${address.replace(/\n/g, '\\n')}
-${currentProfileDataForDebug.profileimage ? `PHOTO;VALUE=URL:${currentProfileDataForDebug.profileimage}` : ''}
 `;
 
-            // Add social links to vCard if they exist
+            // Add social links
             if (socialLinks.linkedin) vCard += `URL;type=LinkedIn:${socialLinks.linkedin}\n`;
             if (socialLinks.instagram) vCard += `URL;type=Instagram:${socialLinks.instagram}\n`;
             if (socialLinks.facebook) vCard += `URL;type=Facebook:${socialLinks.facebook}\n`;
             if (socialLinks.twitter) vCard += `URL;type=Twitter:${socialLinks.twitter}\n`;
             if (socialLinks.github) vCard += `URL;type=GitHub:${socialLinks.github}\n`;
-            if (socialLinks.whatsapp) vCard += `URL;type=WhatsApp:${socialLinks.whatsapp}\n`; // Or use TEL;TYPE=WHATSAPP:
+            if (socialLinks.whatsapp) vCard += `URL;type=WhatsApp:${socialLinks.whatsapp}\n`;
 
             vCard += `END:VCARD`;
 
